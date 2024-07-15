@@ -15,8 +15,8 @@
     export let type = "write";
     export let titlePlaceholder = "제목을 입력해주세요";
     let editor;
-    let title = "";
-    
+    export let title = "";
+    export let modifyContents = "";
 
     onMount(() => {
         editor = SUNEDITOR.create("test", {
@@ -140,7 +140,7 @@
                 imgUrlArr,
             );
 
-            dispatch("writeContent", { title: title, contents: resultContent });
+            dispatch("writeContent", { title: title, contents: resultContent, writeType : type });
         } catch (error) {
             // 에러 핸들링
             console.error("전체 작업 중 에러 발생:", error.message);
@@ -209,12 +209,15 @@
     />
 </div>
 
-<textarea id="test" placeholder="글을 작성해주세요"> </textarea>
+<textarea id="test" placeholder="글을 작성해주세요">
+    {modifyContents}
+</textarea>
 
 <div class="mt-3 text-center">
     {#if type == "write"}
         <button
             class="bg-blue-500 py-2 px-6 text-white rounded-md"
+            value="insert"
             on:click={writeContent}
         >
             작성 완료하기
@@ -222,6 +225,7 @@
     {:else}
         <button
             class="bg-blue-500 py-2 px-6 text-white rounded-md"
+            value="update"
             on:click={writeContent}
         >
             수정 완료하기
@@ -238,5 +242,4 @@
 </div>
 
 <style>
-    
 </style>

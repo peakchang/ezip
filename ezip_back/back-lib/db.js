@@ -21,7 +21,9 @@ CREATE TABLE IF NOT EXISTS land(
     ld_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     ld_name VARCHAR(255),
     ld_content TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci,
+    ld_location VARCHAR(100) NOT NULL,
     ld_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
 
 */
