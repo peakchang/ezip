@@ -88,7 +88,7 @@
     });
 
     // 글 작성하기
-    async function writeContent() {
+    async function writeContent(e) {
         if (!title || title == "") {
             alert("제목을 입력하세요");
             return;
@@ -140,7 +140,11 @@
                 imgUrlArr,
             );
 
-            dispatch("writeContent", { title: title, contents: resultContent, writeType : type });
+            dispatch("writeContent", {
+                title: title,
+                contents: resultContent,
+                writeType: e.target.value,
+            });
         } catch (error) {
             // 에러 핸들링
             console.error("전체 작업 중 에러 발생:", error.message);

@@ -1,5 +1,3 @@
-
-
 import axios from "axios";
 import { back_api } from "$src/lib/const";
 import moment from "moment-timezone";
@@ -17,6 +15,8 @@ export const load = async ({ fetch, url }) => {
     } catch (error) {
 
     }
+
+    console.log('lajsdfiljaslidfjalijsdf');
 
     return { land_list, getLocation }
 }

@@ -5,6 +5,25 @@ const apiRouter = express.Router();
 
 
 
+
+
+
+apiRouter.post('/upload_customer_info', async (req, res, next) => {
+    let status = true;
+    const body = req.body;
+    try {
+        const insertCustomerInfoQuery = "INSERT INTO cu_info (cu_name, cu_phone, cu_land) VALUES (?,?,?)";
+        await sql_con.promise().query(insertCustomerInfoQuery, [body.cu_name, body.cu_phone, body.cu_land]);
+    } catch (error) {
+        console.error(error.message);
+        status = false;
+    }
+
+    res.json({ status })
+})
+
+
+
 apiRouter.post('/get_view', async (req, res, next) => {
     let status = true;
     let view_data = [];
@@ -31,7 +50,7 @@ apiRouter.post('/load_land_list', async (req, res, next) => {
     let addQuery = ""
     console.log(body);
 
-    if(getLocation && getLocation != '전체'){
+    if (getLocation && getLocation != '전체') {
         addQuery = `WHERE ld_location = '${getLocation}'`
     }
 

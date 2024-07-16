@@ -25,5 +25,14 @@ CREATE TABLE IF NOT EXISTS land(
     ld_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS cu_info(
+    cu_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    cu_name VARCHAR(100),
+    cu_phone VARCHAR(100),
+    cu_land INT,
+    cu_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (cu_land) REFERENCES land(ld_id) ON DELETE SET NULL
+);
+
 
 */

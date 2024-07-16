@@ -34,6 +34,7 @@
         }
 
         const detail = e.detail;
+        console.log(detail);
         if (detail.writeType == "insert") {
             try {
                 const res = await axios.post(
