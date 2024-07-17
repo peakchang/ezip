@@ -4,7 +4,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "cross-env NODE_ENV=product PORT=3093 pm2 start server.js -i 0 --name allthatby_back0",
+    "start": "cross-env NODE_ENV=product PORT=4002 pm2 start server.js -i 0 --name allthatby_back0",
     "dev": "nodemon server"
   },
   "author": "",

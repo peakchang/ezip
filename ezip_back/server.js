@@ -14,7 +14,7 @@ import { authRouter } from './routes/auth.js'
 import { editorRouter } from './routes/editor.js';
 
 
-app.set('port', process.env.PORT || 3093);
+app.set('port', process.env.PORT || 4002);
 app.set('trust proxy', '127.0.0.1');
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

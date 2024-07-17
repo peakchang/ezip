@@ -32,7 +32,7 @@
             alert("위치를 선택하세요.");
             return;
         }
-
+        
         const detail = e.detail;
         console.log(detail);
         if (detail.writeType == "insert") {
