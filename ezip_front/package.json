@@ -5,7 +5,7 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "start": "cross-env NODE_ENV=production PORT=4001 pm2 start server.js -i 0 --name allthatby_front",
+    "start": "cross-env NODE_ENV=production PORT=4001 pm2 start server.js -i 0 --name eezip_front",
     "dev": "nodemon server"
   },
   "keywords": [],
