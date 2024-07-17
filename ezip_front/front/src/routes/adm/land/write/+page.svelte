@@ -32,16 +32,22 @@
             alert("위치를 선택하세요.");
             return;
         }
-        
+
+
+
         const detail = e.detail;
         console.log(detail);
+
+        const htmlContent = detail.contents.replace(/<img([^>]+)style=["']?[^"']*["']?([^>]*)>/g, '<img$1$2>');
+
+
         if (detail.writeType == "insert") {
             try {
                 const res = await axios.post(
                     `${back_api}/admin/upload_content`,
                     {
                         title: detail.title,
-                        contents: detail.contents,
+                        contents: htmlContent,
                         location: getLocation,
                     },
                 );
@@ -60,7 +66,7 @@
                     `${back_api}/admin/update_content`,
                     {
                         title: detail.title,
-                        contents: detail.contents,
+                        contents: htmlContent,
                         location: getLocation,
                         getId,
                     },
