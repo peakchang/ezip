@@ -78,6 +78,15 @@
             <span>현장관리</span>
         </div>
     </a>
+
+    <a href="/adm/customer">
+        <div class="p-2 text-base cursor-pointer mb-1.5">
+            <span class="mr-2">
+                <i class="fa fa-users" aria-hidden="true"></i>
+            </span>
+            <span>고객관리</span>
+        </div>
+    </a>
 </DrawerCustom>
 
 <div

@@ -22,7 +22,7 @@
     ];
 
     function changeLocation() {
-        goto(`?location=${getLocation}`, { invalidateAll: true });
+        goto(`/?location=${getLocation}`, { invalidateAll: true });
     }
 </script>
 

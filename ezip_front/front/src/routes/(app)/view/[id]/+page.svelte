@@ -95,13 +95,16 @@
                 cu_land,
             });
             if (res.data.status) {
-                console.log("successs~~~!!!!!!!!!!!!!!!!!!!");
+                alert('접수가 완료 되었습니다. 전문 상담사가 곧 전화 빠른 시간 내 전화드릴 예정입니다.')
+                cu_name = ""
+                phNum1 = "010"
+                phNum2 = ""
+                phNum3 = ""
+                modalBool = false
             }
         } catch (error) {
             console.error(error.message);
         }
-
-        console.log("alisidjfiajsdflijasdf");
     }
 </script>
 
@@ -242,7 +245,7 @@
 
 <hr class="my-5" />
 
-<div>
+<div id="view_area">
     {@html viewData.ld_content}
 </div>
 
@@ -335,3 +338,11 @@
         </div>
     </div>
 </div>
+
+
+<style>
+:global(figure) {
+    max-width: 100%;
+}
+</style>
+
