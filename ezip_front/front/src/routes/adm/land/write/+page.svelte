@@ -38,7 +38,7 @@
         const detail = e.detail;
         console.log(detail);
 
-        const htmlContent = detail.contents.replace(/<img([^>]+)style=["']?[^"']*["']?([^>]*)>/g, '<img$1$2>');
+        const htmlContent = detail.contents.replace(/<img[^>]*src=["']([^"']*)["'][^>]*>/g, '<img src="$1">');
 
 
         if (detail.writeType == "insert") {
