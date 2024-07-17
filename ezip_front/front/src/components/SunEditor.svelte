@@ -235,14 +235,15 @@
             수정 완료하기
         </button>
     {/if}
-    <!-- 
+    
     <button
         on:click={() => {
             console.log(editor);
+            console.log(editor.getContents());
         }}
     >
         촤촤
-    </button> -->
+    </button>
 </div>
 
 <style>
