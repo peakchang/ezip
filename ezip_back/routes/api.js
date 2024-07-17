@@ -8,6 +8,21 @@ const apiRouter = express.Router();
 
 
 
+apiRouter.post('/upload_client', async (req, res, next) => {
+    let status = true;
+    const body = req.body;
+
+    try {
+        const insertClientQuery = "INSERT INTO client (cl_name, cl_phone) VALUES (?,?)";
+        await sql_con.promise().query(insertClientQuery, [body.client_name, body.client_phone]);
+    } catch (error) {
+        status = false;
+    }
+
+    res.json({ status })
+})
+
+
 apiRouter.post('/upload_customer_info', async (req, res, next) => {
     let status = true;
     const body = req.body;

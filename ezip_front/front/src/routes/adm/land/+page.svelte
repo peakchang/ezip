@@ -1,7 +1,13 @@
 <script>
+    import axios from "axios";
     import { Checkbox, Toggle } from "flowbite-svelte";
+    import { invalidateAll } from "$app/navigation";
+    import { back_api } from "$src/lib/const";
 
     let allData = [];
+
+    let checkedList = [];
+
     export let data;
     console.log(data);
     $: data, setData();
@@ -9,14 +15,44 @@
     function setData() {
         allData = data.land_list;
     }
+
+    async function deleteLand() {
+        if (!confirm("삭제한 내용은 복구가 불가합니다. 진행하시겠습니까?")) {
+            return;
+        }
+
+        let deleteList = checkedList.map((num) => allData[num]["ld_id"]);
+
+        try {
+            const res = await axios.post(`${back_api}/admin/delete_land`, {
+                delete_list: deleteList,
+            });
+            if (res.data.status) {
+                alert("삭제가 완료 되었습니다.");
+                invalidateAll();
+            }
+        } catch (error) {
+            console.error(error.message);
+        }
+        console.log(deleteList);
+    }
 </script>
 
 <div class="mb-5">
     <a href="/adm/land/write">
-        <button class="bg-green-500 px-3 py-1.5 rounded-md text-sm text-white">
+        <button
+            class="bg-green-500 active:bg-green-600 px-3 py-1.5 rounded-md text-sm text-white"
+        >
             현장 추가
         </button>
     </a>
+
+    <button
+        class="bg-red-500 active:bg-red-600 px-3 py-1.5 rounded-md text-sm text-white"
+        on:click={deleteLand}
+    >
+        현장 삭제
+    </button>
 </div>
 
 <div class="w-full min-w-[600px] overflow-auto">
@@ -42,7 +78,12 @@
                 <tr>
                     <td class="border py-2 w-12">
                         <div class="flex justify-center">
-                            <Checkbox />
+                            <input
+                                type="checkbox"
+                                value={idx}
+                                bind:group={checkedList}
+                            />
+                            <!-- <Checkbox value={idx} bind:group={checkedList} /> -->
                         </div>
                     </td>
 

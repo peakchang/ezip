@@ -2,8 +2,10 @@
     import { onMount } from "svelte";
     import { browser } from "$app/environment";
     import { Modal, Button } from "flowbite-svelte";
+
     import axios from "axios";
     import { back_api } from "$src/lib/const";
+    import { isValidPhoneNumber, cleanPhoneNumber } from "$lib/lib";
 
     export let data;
     let viewData = {};
@@ -15,6 +17,10 @@
     let phNum3 = "";
 
     let modalBool = false;
+    let inqueryModalBool = false;
+
+    let client_name = "";
+    let client_phone = "";
 
     let persnalBool = false;
 
@@ -86,6 +92,13 @@
 
         const cu_phone = phNum1 + phNum2 + phNum3;
 
+        if (!isValidPhoneNumber(cu_phone)) {
+            alert("올바른 전화번호가 아닙니다. 확인 해주세요");
+            return false;
+        }
+
+
+
         const cu_land = viewData.ld_id;
 
         try {
@@ -95,22 +108,94 @@
                 cu_land,
             });
             if (res.data.status) {
-                alert('접수가 완료 되었습니다. 전문 상담사가 곧 전화 빠른 시간 내 전화드릴 예정입니다.')
-                cu_name = ""
-                phNum1 = "010"
-                phNum2 = ""
-                phNum3 = ""
-                modalBool = false
+                alert(
+                    "접수가 완료 되었습니다. 전문 상담사가 곧 전화 빠른 시간 내 전화드릴 예정입니다.",
+                );
+                cu_name = "";
+                phNum1 = "010";
+                phNum2 = "";
+                phNum3 = "";
+                modalBool = false;
             }
         } catch (error) {
             console.error(error.message);
         }
+    }
+
+    async function uploadClient() {
+        if (!client_name) {
+            alert("이름을 입력하세요.");
+            return false;
+        }
+
+        if (!client_phone) {
+            alert("전화번호를 입력하세요.");
+            return false;
+        }
+
+        if (!isValidPhoneNumber(client_phone)) {
+            alert("올바른 전화번호가 아닙니다. 확인 해주세요");
+            return false;
+        }
+
+        try {
+            const res = await axios.post(`${back_api}/upload_client`, {
+                client_name,
+                client_phone: cleanPhoneNumber(client_phone),
+            });
+
+            if (res.data.status) {
+                alert(
+                    "접수가 완료 되었습니다. 빠른 시일 내 연락 드리겠습니다.",
+                );
+                client_name = "";
+                client_phone = "";
+                inqueryModalBool = false;
+            }
+        } catch (error) {}
     }
 </script>
 
 <svelte:head>
     <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 </svelte:head>
+
+<Modal title="광고 문의" bind:open={inqueryModalBool}>
+    <table class="w-full">
+        <tr>
+            <th class="w-1/4 text-sm pb-5">담당자 성함</th>
+            <td class="pb-5">
+                <input
+                    type="text"
+                    class="p-2 text-sm border-1 border-gray-300 rounded-md focus:border-0 w-full"
+                    bind:value={client_name}
+                />
+            </td>
+        </tr>
+
+        <tr>
+            <th class="w-1/4 text-sm">전화번호</th>
+            <td>
+                <input
+                    type="text"
+                    class="p-2 text-sm border-gray-300 rounded-md focus:border-0 w-full"
+                    bind:value={client_phone}
+                />
+            </td>
+        </tr>
+    </table>
+    <svelte:fragment slot="footer">
+        <Button color="blue" on:click={uploadClient}>제출</Button>
+        <Button
+            color="alternative"
+            on:click={() => {
+                inqueryModalBool = false;
+            }}
+        >
+            닫기
+        </Button>
+    </svelte:fragment>
+</Modal>
 
 <Modal
     title="개인정보 수집 및 이용에 대한 안내"
@@ -231,6 +316,9 @@
     <div class="absolute top-[-10px] right-4 text-xs md:text-sm">
         <button
             class=" bg-yellow-600 active:bg-yellow-700 text-white py-1 px-3 rounded-full mr-1"
+            on:click={() => {
+                inqueryModalBool = true;
+            }}
         >
             광고문의
         </button>
@@ -339,10 +427,8 @@
     </div>
 </div>
 
-
 <style>
-:global(figure) {
-    max-width: 100%;
-}
+    :global(figure) {
+        max-width: 100%;
+    }
 </style>
-

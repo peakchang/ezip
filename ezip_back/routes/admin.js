@@ -3,11 +3,34 @@ import { sql_con } from "../back-lib/db.js";
 const adminRouter = express.Router();
 
 
+
+
+
+
+adminRouter.post('/delete_land', async (req, res, next) => {
+    let status = true;
+    const body = req.body;
+    const deleteList = body.delete_list;
+
+    console.log(deleteList);
+    
+    try {
+        for (let i = 0; i < deleteList.length; i++) {
+            const deleteListQuery = "DELETE FROM land WHERE ld_id = ?";
+            await sql_con.promise().query(deleteListQuery, [deleteList[i]]);
+        }
+    } catch (error) {
+        status = false;
+    }
+
+    res.json({ status })
+})
+
+
+
 adminRouter.post('/load_customers', async (req, res, next) => {
     let status = true;
-
     let cu_data = [];
-    
 
     try {
         const loadCustomersQuery = "SELECT cu_info.*, land.ld_location FROM cu_info LEFT JOIN land ON cu_info.cu_land = land.ld_id ORDER BY cu_id DESC"
@@ -16,8 +39,6 @@ adminRouter.post('/load_customers', async (req, res, next) => {
     } catch (error) {
 
     }
-
-
 
     res.json({ status, cu_data })
 })
