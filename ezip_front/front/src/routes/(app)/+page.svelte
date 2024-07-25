@@ -22,12 +22,20 @@
     }
 </script>
 
+
 <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
     {#each landList as land}
         <a href="/view/{land.ld_id}">
-            <div class="border rounded-md overflow-hidden">
-                <div class="h-40 flex justify-center items-center">
-                    <img src="{extractFirstImageSrc(land.ld_content)}" alt="" class="w-full h-full" />
+            <div class="border rounded-md overflow-hidden ">
+                <div class="flex justify-center items-center square-container ">
+                    <div class="square-content bg-cover" style="background-image: url('{extractFirstImageSrc(land.ld_content)}')">
+
+                    </div>
+                    <!-- <img
+                        src={extractFirstImageSrc(land.ld_content)}
+                        alt=""
+                        class="w-full h-full"
+                    /> -->
                 </div>
                 <div class="py-2 text-center">
                     {land.ld_name}
@@ -36,3 +44,21 @@
         </a>
     {/each}
 </div>
+<style>
+    .square-container {
+        position: relative;
+        width: 100%; /* 또는 원하는 너비를 설정 */
+    }
+    .square-container::before {
+        content: "";
+        display: block;
+        padding-top: 100%; /* 1:1 비율을 유지하기 위해 100% 사용 */
+    }
+    .square-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+</style>

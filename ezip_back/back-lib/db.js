@@ -17,6 +17,13 @@ export const sql_con = mysql.createConnection({
 
 CREATE DATABASE ezip default CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
+CREATE TABLE IF NOT EXISTS base(
+    base VARCHAR(10),
+    status_list VARCHAR(255) NOT NULL,
+    color_list VARCHAR(255) NOT NULL
+);
+
+
 CREATE TABLE IF NOT EXISTS land(
     ld_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     ld_name VARCHAR(255),
@@ -32,9 +39,12 @@ CREATE TABLE IF NOT EXISTS cu_info(
     cu_name VARCHAR(100),
     cu_phone VARCHAR(100),
     cu_land INT,
+    cu_status VARCHAR(100),
     cu_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (cu_land) REFERENCES land(ld_id) ON DELETE SET NULL
 );
+
+ALTER TABLE cu_info ADD COLUMN cu_status VARCHAR(100) AFTER cu_land;
 
 CREATE TABLE IF NOT EXISTS client(
     cl_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,

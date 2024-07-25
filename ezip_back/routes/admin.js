@@ -4,6 +4,53 @@ const adminRouter = express.Router();
 
 
 
+// 기본 베이스 작업~~~~
+
+adminRouter.post('/load_base', async (req, res, next) => {
+    let status = true;
+    const body = req.body;
+    console.log(body);
+    let get_base = {};
+
+    try {
+        const getBaseQuery = "SELECT * FROM base WHERE base = 'base'";
+        const getBase = await sql_con.promise().query(getBaseQuery);
+        get_base = getBase[0][0];
+    } catch (error) {
+        status = false;
+    }
+
+
+    res.json({ status, get_base })
+})
+
+
+adminRouter.post('/update_base', async (req, res, next) => {
+    let status = true;
+    const body = req.body;
+    console.log(body);
+
+    try {
+
+        // 먼저 있는지 체크 부터~
+        const getBaseQuery = "SELECT * FROM base WHERE base = 'base'";
+        const getBase = await sql_con.promise().query(getBaseQuery);
+        console.log(getBase[0][0]);
+        if (getBase[0][0]) {
+            // 업데이트 하기~
+            const updateBaseQuery = "UPDATE base SET status_list =?, color_list =? WHERE base = 'base'";
+            await sql_con.promise().query(updateBaseQuery, [body.status_list, body.color_list]);
+        } else {
+            // insert 하기~
+            const insertBaseQuery = "INSERT INTO base (base, status_list, color_list) VALUES (?,?,?)";
+            await sql_con.promise().query(insertBaseQuery, ['base', body.status_list, body.color_list]);
+        }
+    } catch (error) {
+        status = false;
+    }
+
+    res.json({ status })
+})
 
 
 
@@ -13,7 +60,7 @@ adminRouter.post('/delete_land', async (req, res, next) => {
     const deleteList = body.delete_list;
 
     console.log(deleteList);
-    
+
     try {
         for (let i = 0; i < deleteList.length; i++) {
             const deleteListQuery = "DELETE FROM land WHERE ld_id = ?";
@@ -31,8 +78,11 @@ adminRouter.post('/delete_land', async (req, res, next) => {
 adminRouter.post('/load_customers', async (req, res, next) => {
     let status = true;
     let cu_data = [];
-
+    let base_data = {};
     try {
+        const getBaseQuery = "SELECT * FROM base WHERE base = 'base'";
+        const getBase = await sql_con.promise().query(getBaseQuery);
+        base_data = getBase[0][0];
         const loadCustomersQuery = "SELECT cu_info.*, land.ld_location FROM cu_info LEFT JOIN land ON cu_info.cu_land = land.ld_id ORDER BY cu_id DESC"
         const loadCustomers = await sql_con.promise().query(loadCustomersQuery);
         cu_data = loadCustomers[0];
@@ -40,7 +90,7 @@ adminRouter.post('/load_customers', async (req, res, next) => {
 
     }
 
-    res.json({ status, cu_data })
+    res.json({ status, cu_data, base_data })
 })
 
 
