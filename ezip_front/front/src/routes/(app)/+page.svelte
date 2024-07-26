@@ -1,9 +1,77 @@
 <script>
+    import axios from "axios";
+    import { back_api } from "$src/lib/const";
+    import { onMount } from "svelte";
+    import { browser } from "$app/environment";
+
     export let data;
     let landList = [];
+    let addStatus = true;
     $: data, setData();
+    $: landList, setupObserver();
+    let addLandNum = 12;
+
+    onMount(() => {
+        setupObserver();
+    });
+
+    function setupObserver() {
+        if (browser) {
+            try {
+                const io = new IntersectionObserver(
+                    (entries, observer) => {
+                        entries.forEach((entry) => {
+                            if (entry.isIntersecting) {
+                                observer.unobserve(entry.target);
+                                loadMoreData();
+                            }
+                        });
+                    },
+                    {
+                        rootMargin: "100px", // 더 큰 값으로 설정하여 호출 빈도를 줄입니다.
+                    },
+                );
+                if (addStatus) {
+                    const landListElement =
+                        document.querySelectorAll(".land_element");
+                    io.observe(landListElement[landListElement.length - 1]);
+                }
+            } catch (error) {
+                console.error(error.message);
+            }
+        }
+    }
+
+    async function loadMoreData() {
+        try {
+            const res = await axios.post(`${back_api}/update_land_list`, {
+                add_land_num: addLandNum,
+            });
+            if (res.data.status) {
+                const addLandList = res.data.add_land_list;
+
+                // 기존 landList 배열에 추가된 addLandList[0] 의 ld_id 값이 중복이 있는지 판단 (없어야 추가)
+                if (
+                    !landList.some(
+                        (element) => element.ld_id === addLandList[0].ld_id,
+                    )
+                ) {
+                    if (addLandList && addLandList.length > 0) {
+                        landList = [...landList, ...addLandList];
+                        addLandNum = addLandNum + 12;
+                    }
+                }
+            } else {
+                addStatus = false;
+            }
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+
     function setData() {
         landList = data.land_list;
+        console.log(landList);
     }
 
     function extractFirstImageSrc(htmlContent) {
@@ -22,15 +90,17 @@
     }
 </script>
 
-
 <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
-    {#each landList as land}
-        <a href="/view/{land.ld_id}">
-            <div class="border rounded-md overflow-hidden ">
-                <div class="flex justify-center items-center square-container ">
-                    <div class="square-content bg-cover" style="background-image: url('{extractFirstImageSrc(land.ld_content)}')">
-
-                    </div>
+    {#each landList as land, idx}
+        <a href="/view/{land.ld_id}" class="land_element">
+            <div class="border rounded-md overflow-hidden">
+                <div class="flex justify-center items-center square-container">
+                    <div
+                        class="square-content bg-cover"
+                        style="background-image: url('{extractFirstImageSrc(
+                            land.ld_content,
+                        )}')"
+                    ></div>
                     <!-- <img
                         src={extractFirstImageSrc(land.ld_content)}
                         alt=""
@@ -44,6 +114,7 @@
         </a>
     {/each}
 </div>
+
 <style>
     .square-container {
         position: relative;

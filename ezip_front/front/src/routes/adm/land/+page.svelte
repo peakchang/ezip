@@ -1,6 +1,5 @@
 <script>
     import axios from "axios";
-    import { Checkbox, Toggle } from "flowbite-svelte";
     import { invalidateAll } from "$app/navigation";
     import { back_api } from "$src/lib/const";
 
@@ -65,9 +64,7 @@
                         console.log("alsdjflajslidfj");
                     }}
                 >
-                    <div class="flex justify-center">
-                        <Checkbox />
-                    </div>
+                    <div class="flex justify-center"></div>
                 </th>
                 <th class="border py-2">번호</th>
                 <th class="border py-2">현장</th>
@@ -78,20 +75,23 @@
                 <tr>
                     <td class="border py-2 w-12">
                         <div class="flex justify-center">
-                            <input
-                                type="checkbox"
-                                value={idx}
-                                bind:group={checkedList}
-                            />
-                            <!-- <Checkbox value={idx} bind:group={checkedList} /> -->
+                            <label>
+                                <input
+                                    type="checkbox"
+                                    value={idx}
+                                    bind:group={checkedList}
+                                />
+
+                                <span class="custom-checkbox"></span>
+                            </label>
                         </div>
                     </td>
 
-                    <td class="border py-2 w-20">
-                        {allData[idx]["ld_id"]}
+                    <td class="border py-2">
+                        {idx + 1}
                     </td>
                     <td class="border py-2">
-                        <a href="/">
+                        <a href="/view/{allData[idx]["ld_id"]}">
                             <span>{allData[idx]["ld_name"]}</span>
                         </a>
                     </td>

@@ -51,6 +51,19 @@ export const isStrongPassword = (password) => {
     return regex.test(password);
 }
 
+export function formatPhoneNumber(phoneNumbers) {
+    // 전화번호를 '/'로 분할
+    var numbers = phoneNumbers.split(" / ");
+
+    // 각 전화번호를 포맷팅
+    var formattedNumbers = numbers.map(function (number) {
+        return number.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+    });
+
+    // 포맷팅된 전화번호를 '/'로 결합
+    return formattedNumbers.join(" / ");
+}
+
 
 export const cleanPhoneNumber = (phoneNumber) => {
     // 전화번호에서 하이픈(-)을 제거하여 숫자만 남깁니다.

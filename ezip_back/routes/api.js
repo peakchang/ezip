@@ -56,6 +56,38 @@ apiRouter.post('/get_view', async (req, res, next) => {
 
 
 // 메인 페이지 리스트 불러오기~~
+
+
+apiRouter.post('/update_land_list', async (req, res, next) => {
+    console.log('들어는 와야지!!!');
+    let status = true;
+    let add_land_list = [];
+
+    const body = req.body;
+    const getLocation = body.getLocation;
+    let addQuery = ""
+    let addLandNum = body.add_land_num
+    console.log(body);
+
+    if (getLocation && getLocation != '전체') {
+        addQuery = `WHERE ld_location = '${getLocation}'`
+    }
+
+    try {
+        const loadLandListQuery = `SELECT * FROM land ${addQuery} ORDER BY ld_id DESC LIMIT ${addLandNum}, 12;`;
+        console.log(loadLandListQuery);
+        const loadLandList = await sql_con.promise().query(loadLandListQuery);
+        add_land_list = loadLandList[0];
+    } catch (error) {
+
+    }
+    console.log(add_land_list);
+    console.log(add_land_list.length);
+
+    res.json({ status, add_land_list })
+})
+
+
 apiRouter.post('/load_land_list', async (req, res, next) => {
     let status = true;
     let land_list = [];
@@ -70,7 +102,7 @@ apiRouter.post('/load_land_list', async (req, res, next) => {
     }
 
     try {
-        const loadLandListQuery = `SELECT * FROM land ${addQuery}`;
+        const loadLandListQuery = `SELECT * FROM land ${addQuery} ORDER BY ld_id DESC LIMIT 0, 12;`;
         console.log(loadLandListQuery);
         const loadLandList = await sql_con.promise().query(loadLandListQuery);
         land_list = loadLandList[0];

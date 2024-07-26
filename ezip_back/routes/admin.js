@@ -1,8 +1,55 @@
 import express from "express";
 import { sql_con } from "../back-lib/db.js";
+import { getQueryStr } from "../back-lib/lib.js";
+
 const adminRouter = express.Router();
 
 
+// 문의 관리 작업
+
+adminRouter.post('/load_inquiry_list', async (req, res, next) => {
+    let status = true;
+    let inquiry_list = [];
+    let base_data = {};
+    try {
+        const getBaseQuery = "SELECT * FROM base WHERE base = 'base'";
+        const getBase = await sql_con.promise().query(getBaseQuery);
+        base_data = getBase[0][0];
+        const loadInquiryListQuery = "SELECT * FROM client ORDER BY cl_id DESC;";
+        const loadInquiryList = await sql_con.promise().query(loadInquiryListQuery);
+        inquiry_list = loadInquiryList[0];
+    } catch (error) {
+        status = false;
+    }
+    res.json({ status, inquiry_list, base_data })
+})
+
+
+
+
+// 고객 관리 작업
+adminRouter.post('/customer_update', async (req, res, next) => {
+    let status = true;
+    const updateData = req.body.update_data;
+
+    for (let i = 0; i < updateData.length; i++) {
+        const data = updateData[i];
+        const cuId = data['cu_id'];
+        delete data.cu_id;
+        delete data.ld_location;
+        delete data.cu_created_at;
+
+        const queryData = getQueryStr(data, 'update');
+        queryData.values.push(cuId)
+        try {
+            const cuUpdateQuery = `UPDATE cu_info SET ${queryData.str} WHERE cu_id = ?`;
+            await sql_con.promise().query(cuUpdateQuery, queryData.values);
+        } catch (error) {
+            console.error(error.message);
+        }
+    }
+    res.json({ status })
+})
 
 // 기본 베이스 작업~~~~
 
@@ -53,7 +100,7 @@ adminRouter.post('/update_base', async (req, res, next) => {
 })
 
 
-
+// 현장들 작업~~~~!!!
 adminRouter.post('/delete_land', async (req, res, next) => {
     let status = true;
     const body = req.body;

@@ -64,7 +64,7 @@
                 <td class="border py-2 px-2">
                     <input
                         type="text"
-                        class="p-2 w-full border-gray-400 rounded-md text-sm"
+                        class="p-2 w-full border-gray-400 rounded-md text-sm border"
                         bind:value={statusList}
                     />
                 </td>
@@ -80,7 +80,7 @@
                 <td class="border py-2 px-2">
                     <input
                         type="text"
-                        class="p-1.5 w-full border-gray-400 rounded-md text-sm"
+                        class="p-1.5 w-full border-gray-400 rounded-md text-sm border focus:outline-none focus:border-blue-500"
                         bind:value={colorList}
                     />
                 </td>

@@ -50,8 +50,9 @@ CREATE TABLE IF NOT EXISTS client(
     cl_id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     cl_name VARCHAR(100),
     cl_phone VARCHAR(100),
+    cl_status VARCHAR(50),
     cl_created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
-
+ALTER TABLE client ADD COLUMN cl_status VARCHAR(50) AFTER cl_phone;
 
 */

@@ -1,6 +1,9 @@
 <script>
-    import { Checkbox, Toggle } from "flowbite-svelte";
+    import axios from "axios";
     import moment from "moment-timezone";
+    import { invalidateAll } from "$app/navigation";
+    import { back_api } from "$src/lib/const";
+    import { formatPhoneNumber } from "$lib/lib";
 
     export let data;
     let allData = [];
@@ -11,6 +14,7 @@
 
     function setData() {
         allData = data.cu_data;
+        statusList = [];
         const statusStr = data.base_data.status_list;
         const colorStr = data.base_data.color_list;
         if (statusStr && colorStr) {
@@ -20,32 +24,42 @@
                 statusList.push({ status: statusArr[i], color: colorArr[i] });
             }
         }
+
         console.log(statusList);
+        const str = JSON.stringify(statusList);
+        console.log(str);
     }
 
-    function formatPhoneNumber(phoneNumbers) {
-        // 전화번호를 '/'로 분할
-        var numbers = phoneNumbers.split(" / ");
-
-        // 각 전화번호를 포맷팅
-        var formattedNumbers = numbers.map(function (number) {
-            return number.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
-        });
-
-        // 포맷팅된 전화번호를 '/'로 결합
-        return formattedNumbers.join(" / ");
+    async function cuUpdateFunc() {
+        let update_data = checkedList.map((num) => allData[num]);
+        try {
+            const res = await axios.post(`${back_api}/admin/customer_update`, {
+                update_data,
+            });
+            if (res.data.status) {
+                alert("업데이트가 완료 되었습니다.");
+                invalidateAll();
+                checkedList = [];
+            }
+        } catch (error) {
+            console.error(error.message);
+        }
     }
-
-    async function cuUpdateFunc(){
-        console.log(checkedList);
-    }
-
-
-    
 </script>
 
 <div class="mb-5">
-    <button on:click={cuUpdateFunc}>업데이트</button>
+    <button
+        class="py-1 px-3 bg-blue-500 active:bg-blue-600 text-white rounded-md"
+        on:click={cuUpdateFunc}
+    >
+        업데이트
+    </button>
+
+    <!-- 토글 디자인 예시 -->
+    <!-- <label class="toggle-switch">
+        <input type="checkbox" />
+        <span class="slider"></span>
+    </label> -->
 </div>
 
 <div class="w-full min-w-[600px] overflow-auto">
@@ -59,7 +73,7 @@
                     }}
                 >
                     <div class="flex justify-center">
-                        <input type="checkbox" name="" id="">
+                        <input type="checkbox" name="" id="" />
                     </div>
                 </th>
                 <th class="border py-2">고객명</th>
@@ -70,15 +84,23 @@
             </tr>
 
             {#each allData as data, idx}
-                <tr>
+                <tr
+                    style="background-color: {(
+                        statusList.find(
+                            (obj) => obj.status === allData[idx]['cu_status'],
+                        ) || {}
+                    ).color || ''};"
+                >
                     <td class="border py-2 w-12">
                         <div class="flex justify-center">
-
                             <label>
-                                <input type="checkbox" value={idx} bind:group={checkedList}>
+                                <input
+                                    type="checkbox"
+                                    value={idx}
+                                    bind:group={checkedList}
+                                />
                                 <span class="custom-checkbox"></span>
                             </label>
-                            
                         </div>
                     </td>
                     <td class="border py-2">
@@ -103,8 +125,10 @@
                     </td>
 
                     <td class="border py-2">
-                        <select class="text-xs py-1 px-2">
-                            <option value="">-- 선택 --</option>
+                        <select
+                            class="text-xs py-1 px-2 border border-gray-400 rounded-md"
+                            bind:value={allData[idx]["cu_status"]}
+                        >
                             {#each statusList as status}
                                 <option
                                     value={status.status}
@@ -120,49 +144,3 @@
         </table>
     </div>
 </div>
-
-
-<style>
-    /* 숨겨진 기본 체크박스 */
-    input[type="checkbox"] {
-        display: none;
-    }
-
-    /* 사용자 정의 체크박스 컨테이너 */
-    .custom-checkbox {
-        display: inline-block;
-        width: 24px;
-        height: 24px;
-        background-color: #f0f0f0;
-        border-radius: 4px;
-        position: relative;
-        cursor: pointer;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-        transition: background-color 0.3s ease;
-    }
-
-    /* 체크 표시 */
-    .custom-checkbox::after {
-        content: '';
-        position: absolute;
-        top: 40%;
-        left: 50%;
-        width: 12px;
-        height: 12px;
-        border: solid white;
-        border-width: 0 3px 3px 0;
-        /* transform: translate(-50%, -50%) rotate(40deg); */
-        transform: translate(-50%, -60%) rotate(45deg);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-    }
-
-    /* 체크박스가 체크된 경우 스타일 */
-    input[type="checkbox"]:checked + .custom-checkbox {
-        background-color: red;
-    }
-
-    input[type="checkbox"]:checked + .custom-checkbox::after {
-        opacity: 1;
-    }
-</style>

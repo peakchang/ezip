@@ -1,11 +1,13 @@
 <script>
     import { onMount } from "svelte";
     import { browser } from "$app/environment";
-    import { Modal, Button } from "flowbite-svelte";
+    // import { Modal, Button } from "flowbite-svelte";
 
     import axios from "axios";
     import { back_api } from "$src/lib/const";
     import { isValidPhoneNumber, cleanPhoneNumber } from "$lib/lib";
+
+    import Modal from "$src/components/Modal.svelte";
 
     export let data;
     let viewData = {};
@@ -97,8 +99,6 @@
             return false;
         }
 
-
-
         const cu_land = viewData.ld_id;
 
         try {
@@ -160,50 +160,58 @@
     <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 </svelte:head>
 
-<Modal title="광고 문의" bind:open={inqueryModalBool}>
-    <table class="w-full">
-        <tr>
-            <th class="w-1/4 text-sm pb-5">담당자 성함</th>
-            <td class="pb-5">
-                <input
-                    type="text"
-                    class="p-2 text-sm border-1 border-gray-300 rounded-md focus:border-0 w-full"
-                    bind:value={client_name}
-                />
-            </td>
-        </tr>
+<Modal bind:modalShowBoolean={inqueryModalBool}>
+    <div class="w-full md:w-3/4 mx-auto">
+        <table class="w-full mt-3">
+            <tr>
+                <th class="w-1/4 text-sm pb-5">담당자 성함</th>
+                <td class="pb-5">
+                    <input
+                        type="text"
+                        class="p-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 w-full"
+                        bind:value={client_name}
+                    />
+                </td>
+            </tr>
 
-        <tr>
-            <th class="w-1/4 text-sm">전화번호</th>
-            <td>
-                <input
-                    type="text"
-                    class="p-2 text-sm border-gray-300 rounded-md focus:border-0 w-full"
-                    bind:value={client_phone}
-                />
-            </td>
-        </tr>
-    </table>
-    <svelte:fragment slot="footer">
-        <Button color="blue" on:click={uploadClient}>제출</Button>
-        <Button
-            color="alternative"
-            on:click={() => {
-                inqueryModalBool = false;
-            }}
-        >
-            닫기
-        </Button>
-    </svelte:fragment>
+            <tr>
+                <th class="w-1/4 text-sm">전화번호</th>
+                <td>
+                    <input
+                        type="text"
+                        class="p-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:border-blue-500 w-full"
+                        bind:value={client_phone}
+                    />
+                </td>
+            </tr>
+        </table>
+
+        <div class="text-center pl-10 mt-4">
+            <button
+                class="w-1/4 border border-blue-500 bg-blue-500 active:bg-blue-600 py-1 rounded-md text-white text-sm"
+                on:click={uploadClient}
+            >
+                제출
+            </button>
+            <button
+                class="w-1/4 border border-blue-500 active:bg-blue-500 active:text-white py-1 px-3 rounded-md text-sm"
+                on:click={() => {
+                    inqueryModalBool = false;
+                }}
+            >
+                닫기
+            </button>
+        </div>
+    </div>
 </Modal>
 
 <Modal
     title="개인정보 수집 및 이용에 대한 안내"
-    bind:open={modalBool}
+    bind:modalShowBoolean={modalBool}
     autoclose
 >
-    <div>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+    <div class="mt-5">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             '(주)애드피크' / '이집어때' 는 고객님의 개인정보를 중요시하며,
             "정보통신망 이용촉진 및 정보보호"에 관한 법률을 준수하고 있습니다.
             회사는 개인정보취급방침을 통하여 고객님께서 제공하시는 개인정보가
@@ -211,84 +219,84 @@
             조치가 취해지고 있는지 알려드립니다.
         </p>
         <p><br /></p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             고객님은 개인정보 수집 및 이용 동의에 거부하실 수 있습니다. 다만,
             필수항목 동의를 거부하실 경우 {viewData.ld_name} 상담 및 모델하우스 방문예약
             등이 제한됩니다.
         </p>
 
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             1. 수집/이용 목적 : {viewData.ld_name} 상담 및 모델하우스 방문예약
         </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             2. 수집하는 항목 : 성명, 연락처 등
         </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             3. 보유 / 이용 기간 : 이용목적 달성 혹은 폐기 요청시
         </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             4. 동의를 거부할 수 있으며, 거부시 이용이 제한될 수 있습니다.
         </p>
         <p><br /></p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             *개인정보 수집 및 이용 동의서*
         </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             {viewData.ld_name} 상담 및 모델하우스 방문예약 등을 위해 아래와 같이
             개인정보를 수집,이용합니다.
         </p>
         <p><br /></p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             1. 개인정보의 수집/이용목적
         </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             ● 수집한 개인정보는 본인확인 및 {viewData.ld_name} 상담 및 모델하우스
             방문예약 등의 요청사항 처리를 위해 활용합니다.
         </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             2. 수집하려는 개인정보의 항목
         </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             ● 수집하는 개인정보의 항목: 성명, 연락처 등
         </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             3. 개인정보의 보유 및 이용기간
         </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             ● 이용목적 달성 혹은 폐기 요청시
         </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             4. 개인정보 제공 및 공유
         </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             ● 신청자가 제공한 모든 정보는 상기 목적에 필요한 용도 이외로는
             사용되지 않으며 이용목적이 변경될 시에는 사전 동의를 구할 것입니다.
         </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             5. 개인정보의 수집,이용에 관한 동의 거부
         </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             ● 개인정보 수집,이용 동의를 거부할 수 있으나, 동의하지 않을 경우에는 {viewData.ld_name}
             상담 및 모델하우스 방문예약 등이 제한 될 수 있습니다.
         </p>
         <p><br /></p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             * 개인정보 제 3자 제공 동의 *
         </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             다음과 같이 개인정보를 제3자에게 제공하고 있습니다.
         </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             1. 개인정보를 제공받는 자 : 한가인, 심재용
         </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             2. 제공받는 자의 개인정보 이용목적 : {viewData.ld_name} 상담 및 모델하우스
             방문예약
         </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             3. 제공하는 개인정보 항목 : 성명, 연락처 등
         </p>
-        <p class="text-base leading-relaxed text-gray-500 dark:text-gray-400">
+        <p class="text-sm leading-relaxed text-gray-500 dark:text-gray-400">
             4. 제공받는 자의 보유 및 이용기간 : 이용목적 달성 혹은 개인정보
             제3자 제공 철회 시까지
         </p>
@@ -339,12 +347,12 @@
 
 <div class="w-full z-50 bg-white">
     <div class="container mx-auto px-1 max-w-[860px] border rounded-t-lg">
-        <div class="p-5">
+        <div class="p-5 w-full md:w-4/5 mx-auto">
             <div class="mb-3 text-center">
                 <span class="font-semibold">{viewData.ld_name}</span>
             </div>
 
-            <table class="w-full text-xs md:text-sm">
+            <table class="w-full mx-auto text-xs md:text-sm">
                 <tr>
                     <td class="text-center w-1/4 pb-1.5 md:pb-3">
                         이름 <span class="text-red-800">*</span>
@@ -352,7 +360,7 @@
                     <td class="w-3/4 pb-1.5 md:pb-3">
                         <input
                             type="text"
-                            class="w-full py-1 px-3 border-gray-300 rounded-md focus:border-0 text-xs md:text-sm"
+                            class="w-full py-1 px-3 border rounded-md focus:outline-none focus:border-blue-500 text-xs md:text-sm"
                             bind:value={cu_name}
                         />
                     </td>
@@ -364,7 +372,7 @@
                     <td class="flex justify-around">
                         <input
                             type="text"
-                            class="w-full py-1 px-3 border-gray-300 rounded-md focus:border-0 text-xs md:text-sm"
+                            class="w-full py-1 px-3 border rounded-md focus:outline-none focus:border-blue-500 text-xs md:text-sm"
                             bind:value={phNum1}
                         />
                         <div class="flex justify-center items-center px-2">
@@ -372,7 +380,7 @@
                         </div>
                         <input
                             type="text"
-                            class="w-full py-1 px-3 border-gray-300 rounded-md focus:border-0 text-xs md:text-sm"
+                            class="w-full py-1 px-3 border rounded-md focus:outline-none focus:border-blue-500 text-xs md:text-sm"
                             bind:value={phNum2}
                         />
                         <div class="flex justify-center items-center px-2">
@@ -380,7 +388,7 @@
                         </div>
                         <input
                             type="text"
-                            class="w-full py-1 px-3 border-gray-300 rounded-md focus:border-0 text-xs md:text-sm"
+                            class="w-full py-1 px-3 border rounded-md focus:outline-none focus:border-blue-500 text-xs md:text-sm"
                             bind:value={phNum3}
                         />
                     </td>
