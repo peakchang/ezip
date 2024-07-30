@@ -1,5 +1,14 @@
 <script>
-    import CkEditor from "$components/CkEditor.svelte";
+    import QuillEditor from "$components/QuillEditor.svelte";
+
+    let contentArr = [];
+    let getEditorContent = "";
+    let modifyVal = "";
 </script>
 
-<CkEditor />
+<QuillEditor
+    on:getEditorContent={getEditorContent}
+    {modifyVal}
+    bind:contentArr
+    height="500px"
+/>
