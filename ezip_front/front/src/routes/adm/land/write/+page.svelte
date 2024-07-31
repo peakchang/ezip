@@ -14,7 +14,13 @@
 
     $: data, setData();
 
-    function setData() {}
+    function setData() {
+        if (data.all_data) {
+            allData = data.all_data;
+        }
+
+        console.log(allData);
+    }
 
     const uploadContent = async (e) => {
         const type = e.target.value;
@@ -121,6 +127,7 @@
 
 <QuillEditor
     on:getEditorContent={getEditorContent}
+    modifyVal={allData["ld_content"] ? allData["ld_content"] : ""}
     bind:contentArr
     height="500px"
 />
