@@ -153,7 +153,7 @@
             // input file tag 생성
             const input = document.createElement("input");
             input.setAttribute("type", "file");
-            input.setAttribute("accept", ".png,.jpg,.jpeg,.gif,.webp");
+            input.setAttribute("accept", ".png,.jpg,.jpeg,.gif,.webp,.JPG,.JPEG");
             input.click();
 
             // input change

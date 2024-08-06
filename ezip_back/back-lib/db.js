@@ -15,6 +15,7 @@ export const sql_con = mysql.createConnection({
 
 /*
 
+CREATE DATABASE richby default CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 CREATE DATABASE ezip default CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
 
 CREATE TABLE IF NOT EXISTS base(
