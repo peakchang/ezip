@@ -43,8 +43,6 @@
 
     onMount(() => {
         try {
-            console.log(import.meta.env.VITE_KAKAO_JSKEY);
-            
             Kakao.init(import.meta.env.VITE_KAKAO_JSKEY);
             console.log(Kakao);
 
