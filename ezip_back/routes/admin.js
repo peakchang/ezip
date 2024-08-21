@@ -130,7 +130,7 @@ adminRouter.post('/load_customers', async (req, res, next) => {
         const getBaseQuery = "SELECT * FROM base WHERE base = 'base'";
         const getBase = await sql_con.promise().query(getBaseQuery);
         base_data = getBase[0][0];
-        const loadCustomersQuery = "SELECT cu_info.*, land.ld_location FROM cu_info LEFT JOIN land ON cu_info.cu_land = land.ld_id ORDER BY cu_id DESC"
+        const loadCustomersQuery = "SELECT cu_info.*, land.ld_name FROM cu_info LEFT JOIN land ON cu_info.cu_land = land.ld_id ORDER BY cu_id DESC"
         const loadCustomers = await sql_con.promise().query(loadCustomersQuery);
         cu_data = loadCustomers[0];
     } catch (error) {

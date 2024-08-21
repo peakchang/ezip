@@ -121,7 +121,7 @@
                     </td>
 
                     <td class="border py-2">
-                        <span>{allData[idx]["ld_location"]}</span>
+                        <span>{allData[idx]["ld_name"]}</span>
                     </td>
 
                     <td class="border py-2">
