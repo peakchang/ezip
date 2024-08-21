@@ -47,6 +47,9 @@
         href="https://unpkg.com/quill-table-ui@1.0.5/dist/index.css"
         rel="stylesheet"
     />
+
+
+    <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 </svelte:head>
 <slot />
 

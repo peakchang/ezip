@@ -2,13 +2,17 @@
     import { onMount } from "svelte";
     import { browser } from "$app/environment";
 
-    import { page } from '$app/stores';
+    import { page } from "$app/stores";
 
     // import { Modal, Button } from "flowbite-svelte";
 
     import axios from "axios";
     import { back_api } from "$src/lib/const";
-    import { isValidPhoneNumber, cleanPhoneNumber, extractFirstImageLink } from "$lib/lib";
+    import {
+        isValidPhoneNumber,
+        cleanPhoneNumber,
+        extractFirstImageLink,
+    } from "$lib/lib";
 
     import Modal from "$src/components/Modal.svelte";
 
@@ -32,22 +36,16 @@
     function setData() {
         viewData = data.view_data;
         console.log(viewData);
-        const getFirstImg = extractFirstImageLink(viewData.ld_content)
+        const getFirstImg = extractFirstImageLink(viewData.ld_content);
         console.log(getFirstImg);
         console.log($page);
         console.log($page.url.href);
-        
-        
-        
     }
 
     onMount(() => {
         try {
             Kakao.init(import.meta.env.VITE_KAKAO_JSKEY);
             console.log(Kakao);
-
-            
-            
         } catch (error) {
             console.error(error.message);
         }
@@ -170,9 +168,9 @@
     }
 </script>
 
-<svelte:head>
+<!-- <svelte:head>
     <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
-</svelte:head>
+</svelte:head> -->
 
 <Modal bind:modalShowBoolean={inqueryModalBool}>
     <div class="w-full md:w-3/4 mx-auto">
