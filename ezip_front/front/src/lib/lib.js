@@ -1,6 +1,14 @@
 import Cookies from "js-cookie";
 
 
+// 첫번째 이미지 가져오는 함수
+
+export function extractFirstImageLink(htmlString) {
+    const regex = /<img[^>]+src="([^">]+)"/i;
+    const match = htmlString.match(regex);
+    return match ? match[1] : null;
+}
+
 // ******************  에디터 관련
 
 // 글 작성(업로드)시 HTML 태그에서 base64 코드 

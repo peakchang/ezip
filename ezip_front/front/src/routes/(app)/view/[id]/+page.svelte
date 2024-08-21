@@ -1,11 +1,14 @@
 <script>
     import { onMount } from "svelte";
     import { browser } from "$app/environment";
+
+    import { page } from '$app/stores';
+
     // import { Modal, Button } from "flowbite-svelte";
 
     import axios from "axios";
     import { back_api } from "$src/lib/const";
-    import { isValidPhoneNumber, cleanPhoneNumber } from "$lib/lib";
+    import { isValidPhoneNumber, cleanPhoneNumber, extractFirstImageLink } from "$lib/lib";
 
     import Modal from "$src/components/Modal.svelte";
 
@@ -29,11 +32,22 @@
     function setData() {
         viewData = data.view_data;
         console.log(viewData);
+        const getFirstImg = extractFirstImageLink(viewData.ld_content)
+        console.log(getFirstImg);
+        console.log($page);
+        console.log($page.url.href);
+        
+        
+        
     }
 
     onMount(() => {
         try {
-            Kakao.init("e6c8c90ba06c8dcbe1825e0785679d30");
+            Kakao.init(import.meta.env.VITE_KAKAO_JSKEY);
+            console.log(Kakao);
+
+            
+            
         } catch (error) {
             console.error(error.message);
         }
@@ -43,29 +57,29 @@
         Kakao.Link.sendDefault({
             objectType: "feed",
             content: {
-                title: "카카오톡 공유하기 예제",
-                description: "이것은 카카오톡 공유하기 예제입니다.",
-                imageUrl: "https://your_image_url.com/image.jpg", // 공유할 이미지 URL을 입력하세요.
+                title: viewData.ld_name,
+                // description: viewData.ld_name,
+                imageUrl: extractFirstImageLink(viewData.ld_content), // 공유할 이미지 URL을 입력하세요.
                 link: {
-                    mobileWebUrl: "https://your_website.com",
-                    webUrl: "https://your_website.com",
+                    mobileWebUrl: $page.url.href,
+                    webUrl: $page.url.href,
                 },
             },
             buttons: [
                 {
-                    title: "웹으로 보기",
+                    title: "사이트 바로가기",
                     link: {
-                        mobileWebUrl: "https://your_website.com",
-                        webUrl: "https://your_website.com",
+                        mobileWebUrl: $page.url.href,
+                        webUrl: $page.url.href,
                     },
                 },
-                {
-                    title: "앱으로 보기",
-                    link: {
-                        mobileWebUrl: "https://your_website.com",
-                        webUrl: "https://your_website.com",
-                    },
-                },
+                // {
+                //     title: "앱으로 보기",
+                //     link: {
+                //         mobileWebUrl: "https://your_website.com",
+                //         webUrl: "https://your_website.com",
+                //     },
+                // },
             ],
         });
     }
@@ -303,7 +317,7 @@
     </div>
 
     <svelte:fragment slot="footer">
-        <Button
+        <!-- <Button
             color="blue"
             on:click={() => {
                 persnalBool = true;
@@ -312,7 +326,7 @@
         >
             동의함
         </Button>
-        <Button color="alternative">닫기</Button>
+        <Button color="alternative">닫기</Button> -->
     </svelte:fragment>
 </Modal>
 
