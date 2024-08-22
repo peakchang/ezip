@@ -123,7 +123,8 @@ exports.aligoKakaoNotification_formanager = async (req, customerInfo) => {
         tpl_code: 'TM_5684',
         token: result.token,
         sender: '010-4478-1127',
-        receiver_1: customerInfo.ciPhone,
+        receiver_1: '010-4478-1127',
+        receiver_2: '010-2190-2197',
         subject_1: '분양정보 신청고객 알림톡',
         message_1: `고객 인입 안내!
   ${customerInfo.ciSite} ${customerInfo.ciName}님 접수되었습니다.
