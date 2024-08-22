@@ -49,7 +49,9 @@ apiRouter.post('/upload_customer_info', async (req, res, next) => {
             'receiver_2': '010-2190-2197',
             //'recvname_1': '수신자명을 입력합니다',
             'subject_1': '분양정보 신청고객 알림톡',
-            'message_1': `고객 인입 안내!\n${landName} ${body.cu_name}님 접수되었습니다.\n고객 번호 : ${body.cu_phone}`
+            'subject_2': '분양정보 신청고객 알림톡',
+            'message_1': `고객 인입 안내!\n${landName} ${body.cu_name}님 접수되었습니다.\n고객 번호 : ${body.cu_phone}`,
+            'message_2': `고객 인입 안내!\n${landName} ${body.cu_name}님 접수되었습니다.\n고객 번호 : ${body.cu_phone}`
         });
 
         let config = {
@@ -61,7 +63,7 @@ apiRouter.post('/upload_customer_info', async (req, res, next) => {
         };
 
         const response = await axios.request(config);
-        console.log(response);
+        console.log(response.data);
 
     } catch (error) {
         console.error(error.message);
