@@ -37,7 +37,7 @@ apiRouter.post('/upload_customer_info', async (req, res, next) => {
 
         const getLandNameQuery = "SELECT ld_name FROM land WHERE ld_id = ?"
         const getLandName = await sql_con.promise().query(getLandNameQuery, [body.cu_land]);
-        const landName = '이집어때' + getLandName[0][0].ld_name
+        const landName = '이집어때 ' + getLandName[0][0].ld_name
 
         let data = qs.stringify({
             'apikey': process.env.ALIGOKEY,
