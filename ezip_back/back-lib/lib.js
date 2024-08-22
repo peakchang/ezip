@@ -84,7 +84,7 @@ export const getQueryStr = (data, type, addTimeStr = '') => {
 
 
 
-exports.aligoKakaoNotification_formanager = async (req, customerInfo) => {
+export const aligoKakaoNotification_formanager = async (req, customerInfo) => {
 
     console.log('Kakao Message Send Is Started!!!!!!!!!!!!!!!!');
     try {
