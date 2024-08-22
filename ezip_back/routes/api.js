@@ -1,7 +1,6 @@
 import express from "express";
 import { sql_con } from "../back-lib/db.js";
-
-import { aligoKakaoNotification_formanager } from "../back-lib/lib.js"
+import axios from 'axios'
 
 const apiRouter = express.Router();
 
@@ -37,10 +36,32 @@ apiRouter.post('/upload_customer_info', async (req, res, next) => {
 
         const getLandNameQuery = "SELECT ld_name FROM land WHERE ld_id = ?"
         const getLandName = await sql_con.promise().query(getLandNameQuery, [body.cu_land]);
-        const landName = getLandName[0][0].ld_name
+        const landName = '이집어때' + getLandName[0][0].ld_name
 
-        const customerInfo = { ciSite: landName, ciName: body.cu_name, ciPhone: body.cu_phone }
-        aligoKakaoNotification_formanager(req, customerInfo)
+        let data = qs.stringify({
+            'apikey': process.env.ALIGOKEY,
+            'userid': process.env.ALIGOID,
+            'senderkey': process.env.ALIGO_SENDERKEY,
+            'tpl_code': 'TM_5684',
+            'sender': '010-4478-1127',
+            'receiver_1': '010-4478-1127',
+            'receiver_2': '010-2190-2197',
+            //'recvname_1': '수신자명을 입력합니다',
+            'subject_1': '분양정보 신청고객 알림톡',
+            'message_1': `고객 인입 안내!\n${landName} ${body.cu_name}님 접수되었습니다.\n고객 번호 : ${body.cu_phone}`
+        });
+
+        let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'https://kakaoapi.aligo.in/akv10/alimtalk/send/',
+            headers: {},
+            data: data
+        };
+
+        const response = await axios.request(config);
+        console.log(response);
+
     } catch (error) {
         console.error(error.message);
         status = false;
