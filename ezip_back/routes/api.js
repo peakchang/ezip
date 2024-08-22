@@ -1,5 +1,8 @@
 import express from "express";
 import { sql_con } from "../back-lib/db.js";
+
+import { aligoKakaoNotification_formanager } from "../back-lib/lib.js"
+
 const apiRouter = express.Router();
 
 
@@ -26,9 +29,18 @@ apiRouter.post('/upload_client', async (req, res, next) => {
 apiRouter.post('/upload_customer_info', async (req, res, next) => {
     let status = true;
     const body = req.body;
+
+
     try {
         const insertCustomerInfoQuery = "INSERT INTO cu_info (cu_name, cu_phone, cu_land) VALUES (?,?,?)";
         await sql_con.promise().query(insertCustomerInfoQuery, [body.cu_name, body.cu_phone, body.cu_land]);
+
+        const getLandNameQuery = "SELECT ld_name FROM land WHERE ld_id = ?"
+        const getLandName = await sql_con.promise().query(getLandNameQuery, [body.cu_land]);
+        const landName = getLandName[0][0].ld_name
+
+        const customerInfo = { ciSite: landName, ciName: body.cu_name, ciPhone: body.cu_phone }
+        aligoKakaoNotification_formanager(req, customerInfo)
     } catch (error) {
         console.error(error.message);
         status = false;

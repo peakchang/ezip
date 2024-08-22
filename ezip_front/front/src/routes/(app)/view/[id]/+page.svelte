@@ -115,26 +115,25 @@
 
         console.log(cu_land);
         
-
-        // try {
-        //     const res = await axios.post(`${back_api}/upload_customer_info`, {
-        //         cu_name,
-        //         cu_phone,
-        //         cu_land,
-        //     });
-        //     if (res.data.status) {
-        //         alert(
-        //             "접수가 완료 되었습니다. 전문 상담사가 곧 전화 빠른 시간 내 전화드릴 예정입니다.",
-        //         );
-        //         cu_name = "";
-        //         phNum1 = "010";
-        //         phNum2 = "";
-        //         phNum3 = "";
-        //         modalBool = false;
-        //     }
-        // } catch (error) {
-        //     console.error(error.message);
-        // }
+        try {
+            const res = await axios.post(`${back_api}/upload_customer_info`, {
+                cu_name,
+                cu_phone,
+                cu_land,
+            });
+            if (res.data.status) {
+                alert(
+                    "접수가 완료 되었습니다. 전문 상담사가 곧 전화 빠른 시간 내 전화드릴 예정입니다.",
+                );
+                cu_name = "";
+                phNum1 = "010";
+                phNum2 = "";
+                phNum3 = "";
+                modalBool = false;
+            }
+        } catch (error) {
+            console.error(error.message);
+        }
     }
 
     async function uploadClient() {
