@@ -14,7 +14,7 @@
             getLocation = "전체";
         }
     }
-    
+
     let locationArr = [
         "전체",
         "서울시",
@@ -35,25 +35,6 @@
     }
 </script>
 
-<ModalCustom bind:open={locationModalVisible}>
-    <div class="pl-8 font-bold">지역 변경 선택</div>
-    <div class="grid grid-cols-3 gap-5 py-3">
-        {#each locationArr as location}
-            <div class="text-center">
-                <button
-                    class="border w-2/3 py-2 rounded-full"
-                    class:bg-gray-500={location == $page.url.searchParams.get('location')}
-                    class:text-white={location == $page.url.searchParams.get('location')}
-                    value={location}
-                    on:click={changeLocation}
-                >
-                    {location}
-                </button>
-            </div>
-        {/each}
-    </div>
-</ModalCustom>
-
 <div
     class="container mx-auto px-1 max-w-[860px] pt-5 flex justify-between items-center"
 >
@@ -63,7 +44,7 @@
         </a>
     </div>
     <div>
-        <button
+        <!-- <button
             class="px-3 py-1 text-sm rounded-md bg-blue-500 active:bg-blue-600 text-white"
             on:click={() => {
                 locationModalVisible = true;
@@ -73,7 +54,7 @@
                 <i class="fa fa-compass" aria-hidden="true"></i>
             </span>
             <span>지역 변경</span>
-        </button>
+        </button> -->
 
         <!-- <span class="mr-1 text-gray-600">
             <i class="fa fa-compass" aria-hidden="true"></i>
@@ -91,8 +72,28 @@
     </div>
 </div>
 
-<hr class="my-5" />
+<hr class="mt-5" />
+
+
 
 <div class=" container mx-auto px-1 max-w-[860px] pretendard relative">
+
+    <div class="grid grid-cols-3 md:grid-cols-6 gap-1 md:gap-2 py-3 text-xs md:text-sm">
+        {#each locationArr as location}
+            <div class="text-center">
+                <button
+                    class="border w-2/3 py-1.5 rounded-full"
+                    class:bg-gray-500={location ==
+                        $page.url.searchParams.get("location")}
+                    class:text-white={location ==
+                        $page.url.searchParams.get("location")}
+                    value={location}
+                    on:click={changeLocation}
+                >
+                    {location}
+                </button>
+            </div>
+        {/each}
+    </div>
     <slot></slot>
 </div>
