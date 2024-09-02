@@ -62,6 +62,9 @@
 
     //
     const getEditorContent = (e) => {
+
+        console.log(e.detail.editorContent);
+        
         allData["ld_content"] = e.detail.editorContent;
 
         if (

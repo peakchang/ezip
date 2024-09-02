@@ -37,7 +37,7 @@
                     io.observe(landListElement[landListElement.length - 1]);
                 }
             } catch (error) {
-                console.error(error.message);
+                // console.error(error.message);
             }
         }
     }
@@ -65,7 +65,7 @@
                 addStatus = false;
             }
         } catch (error) {
-            console.error(error.message);
+            // console.error(error.message);
         }
     }
 

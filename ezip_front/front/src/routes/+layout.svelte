@@ -48,10 +48,12 @@
         rel="stylesheet"
     />
 
-
     <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 </svelte:head>
-<slot />
+
+<div class="pretendard">
+    <slot />
+</div>
 
 <style>
     :global(.max_screen) {

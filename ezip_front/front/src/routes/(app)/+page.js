@@ -16,7 +16,5 @@ export const load = async ({ fetch, url }) => {
 
     }
 
-    console.log('lajsdfiljaslidfjalijsdf');
-
     return { land_list, getLocation }
 }
