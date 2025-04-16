@@ -43,15 +43,15 @@ apiRouter.post('/upload_customer_info', async (req, res, next) => {
             'apikey': process.env.ALIGOKEY,
             'userid': process.env.ALIGOID,
             'senderkey': process.env.ALIGO_SENDERKEY,
-            'tpl_code': 'TM_5684',
+            'tpl_code': 'TX_0641',
             'sender': '010-4478-1127',
             'receiver_1': '010-4478-1127',
-            'receiver_2': '010-2190-2197',
+            // 'receiver_2': '010-2190-2197',
             //'recvname_1': '수신자명을 입력합니다',
             'subject_1': '분양정보 신청고객 알림톡',
-            'subject_2': '분양정보 신청고객 알림톡',
-            'message_1': `고객 인입 안내!\n${landName} ${body.cu_name}님 접수되었습니다.\n고객 번호 : ${body.cu_phone}`,
-            'message_2': `고객 인입 안내!\n${landName} ${body.cu_name}님 접수되었습니다.\n고객 번호 : ${body.cu_phone}`
+            // 'subject_2': '분양정보 신청고객 알림톡',
+            'message_1': `고객 접수 안내!\n${landName} ${body.cu_name} 접수되었습니다.\n고객 번호 : ${body.cu_phone}`,
+            // 'message_2': `고객 인입 안내!\n${landName} ${body.cu_name}님 접수되었습니다.\n고객 번호 : ${body.cu_phone}`
         });
 
         let config = {
