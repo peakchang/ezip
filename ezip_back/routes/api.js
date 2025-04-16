@@ -44,7 +44,7 @@ apiRouter.post('/upload_customer_info', async (req, res, next) => {
             'userid': process.env.ALIGOID,
             'senderkey': process.env.ALIGO_SENDERKEY,
             'tpl_code': 'TX_0641',
-            'sender': '010-4478-1127',
+            'sender': '010-2190-2197',
             'receiver_1': '010-4478-1127',
             // 'receiver_2': '010-2190-2197',
             //'recvname_1': '수신자명을 입력합니다',
