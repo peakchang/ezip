@@ -33,6 +33,8 @@
 
     let persnalBool = false;
 
+    let formEle;
+
     function setData() {
         viewData = data.view_data;
         console.log(viewData);
@@ -114,7 +116,7 @@
         const cu_land = viewData.ld_id;
 
         console.log(cu_land);
-        
+
         try {
             const res = await axios.post(`${back_api}/upload_customer_info`, {
                 cu_name,
@@ -359,7 +361,7 @@
     {@html viewData.ld_content}
 </div>
 
-<div class="w-full z-50 bg-white">
+<div class="w-full z-50 bg-white" bind:this={formEle}>
     <div class="container mx-auto px-1 max-w-[860px] border rounded-t-lg">
         <div class="p-5 w-full md:w-4/5 mx-auto">
             <div class="mb-3 text-center">
@@ -446,6 +448,35 @@
                 </button>
             </div>
         </div>
+    </div>
+</div>
+
+<!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
+<div class="fixed right-3 md:right-10 bottom-1/4 md:bottom-1/3 cursor-pointer">
+    <div
+        class="w-12 md:w-16 h-12 md:h-16 border-2 border-gray-500 flex justify-center items-center text-2xl md:text-4xl rounded-full mb-3 bg-gray-50"
+        on:click={() => {
+            window.scrollTo({
+                top: 0,
+                behavior: "smooth",
+            });
+        }}
+    >
+        <i class="fa fa-angle-double-up" aria-hidden="true"></i>
+    </div>
+
+    <div
+        class="w-12 md:w-16 h-12 md:h-16 border-2 border-gray-500 flex justify-center items-center text-xs md:text-base rounded-full leading-none bg-gray-50"
+        on:click={() => {
+            console.log(formEle);
+
+            formEle.scrollIntoView({
+                behavior: "smooth",
+            });
+        }}
+    >
+        문의<br />하기
     </div>
 </div>
 
